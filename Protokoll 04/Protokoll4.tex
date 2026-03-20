@@ -1,0 +1,90 @@
+\documentclass[12pt, a4paper, toc=sectionentrywithdots]{scrartcl}
+
+% ------------------------------------------------------------------------------
+% 1. KONFIGURATION & PAKETE
+% ------------------------------------------------------------------------------
+\usepackage{../Organisatorisch/JKU_SVP} % für Design und Befehle
+\input{../Einstellungen.tex}            % Eistellungen.tex initial einrichten
+
+\addbibresource{Quellen.bib}
+
+% ==============================================================================
+%
+%                     /$$$$$$      /$$    /$$     /$$$$$$$ 
+%                    /$$__  $$    | $$   | $$    | $$__  $$
+%                   | $$  \__/    | $$   | $$    | $$  \ $$
+%                   |  $$$$$$     |  $$ / $$/    | $$$$$$$/
+%                    \____  $$     \  $$ $$/     | $$____/ 
+%                    /$$  \ $$      \  $$$/      | $$      
+%                   |  $$$$$$/       \  $/       | $$      
+%                    \______/         \_/        |__/      
+%                                                                  
+%                SCHULVERSUCHSPRAKTIKUM PHYSIK | LATEX VORLAGE
+%
+% ==============================================================================
+
+
+% ------------------------------------------------------------------------------
+% ================ Hier die Infos zu diesem Protokoll eintragen ================
+% ------------------------------------------------------------------------------
+\praktikumstag  {17. März 2026} % Tag, an dem der Versuch durchgeführt wurde
+\versuchstitel  {XX - Thema} % "<Kurzbez.> - <Name des Themas>"
+
+
+% ========== Hier optional eigene Pakete ergänzen (\usepackage{...}) ===========
+%
+% Pakete und Befehle die in allen Protokollen verwendet werden, sollten in
+% Einstellungen.tex gegeben werden.
+% ------------------------------------------------------------------------------
+
+
+
+% ==============================================================================
+% VERLINKUNGEN & PDF-METADATEN (Hyperref)
+% ------------------------------------------------------------------------------
+\usepackage[
+    colorlinks=true,  
+    linkcolor=black,   
+    citecolor=black,   
+    urlcolor=black,    
+    bookmarksnumbered=true
+]{hyperref}
+ 
+\usepackage[ngerman]{cleveref}
+% ------------------------------------------------------------------------------
+
+% ------------------------------------------------------------------------------
+% ==============================================================================
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%  DOKUMENT BEGINN  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ==============================================================================
+% ------------------------------------------------------------------------------
+\begin{document}
+
+% ------------------------------- TITELSEITE  ----------------------------------
+\maketitlepageSVP
+
+% =========================== HIER STARTET DER INHALT ==========================
+%
+% Der Inhalt wird grundsätzlich in die einzelnen Kapitel .tex gegeben, kann
+% aber auch hier direkt statt \include{} geschrieben werden.
+%    Für Hauptüberschriften wird \addsec{Versuch 1: ...} verwendet.
+%    Für Unterüberschirften wird \subsection*{...} verwendet.
+% ------------------------------------------------------------------------------
+
+\include{./Kapitel/Didaktische_Basisinformationen}
+
+
+\include{./Kapitel/Versuch1}
+
+
+\include{./Kapitel/Versuch2}
+
+
+\include{./Kapitel/Versuch3}
+
+
+% -------  Literatur  --------
+\printbibliography[title={Literatur}, heading=bibintoc]
+
+
+\end{document}
