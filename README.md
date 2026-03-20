@@ -13,9 +13,11 @@ Die Vorlage wird laufend erweitert. Die Versionsnummer gibt dabei Auskunft über
 ## Bilder einfügen
 
 \bild[
+
       caption=,
       label={},
       width=,
+
 ]{<Dateiname>}
 
 caption... Gibt den Text in der Bildbeschriftung hinter "Abbildung x: ..." an. Werden Komma verwendet, ist der gesamte Text in geschwungene Klammern {} zu setzen.
