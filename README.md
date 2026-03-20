@@ -12,13 +12,15 @@ Die Vorlage wird laufend erweitert. Die Versionsnummer gibt dabei Auskunft über
 # Funktionen
 ## Bilder einfügen
 
-\bild[
 
+```
+\bild[
       caption=,
       label={},
       width=,
-
 ]{<Dateiname>}
+```
+
 
 caption... Gibt den Text in der Bildbeschriftung hinter "Abbildung x: ..." an. Werden Komma verwendet, ist der gesamte Text in geschwungene Klammern {} zu setzen.
 label... Darf frei gewählt werden und dient zum späteren Referenzieren des Bildes mit \ref{<label>}
