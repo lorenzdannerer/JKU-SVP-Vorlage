@@ -1,5 +1,7 @@
 # Download
-Das gesamte Verzeichnis lässt sich bei Code -> Download ZIP herunterladen und in z.B. Overleaf importieren.
+Gehe zur [aktuellsten Version](/releases/latest) und lade unter "Assets" die .zip Datei herunter
+ 
+Diese ZIP kann dann in z.B. Overleaf importiert und benutzt werden.
 
 Die Ordner und Dateien namens "Protokoll+\<Nr\>" dürfen beliebig umbenannt werden, alle weiteren Dateien/Ordner sollten ihren orignalen Namen behalten.
 
