@@ -53,5 +53,14 @@ Der Bild-Befehl ist dabei gleich wie oben beschrieben zu verwenden, wobei es kei
 Andersrum macht es keinen Sinn, in der Galerie eine caption anzugeben, wenn jedes Bild eine eigene Beschriftung haben soll.
 
 
-... tbc ...
+`cols` gibt die Anzahl der horizontal zu plazierenden Bilder wieder. Wenn die Anzahl an eingefügten Bilder größer als `cols` ist, wird in die nächste Zeile umgebrochen und weitere Bilder platziert.
+
+`caption` und `label` sind analog zum `\bild` Befehl zu verwenden.
+
+`autolabel` wenn angegeben werden kleine weiße Boxen oben links in jedem Bild erstellt, welche durchnummeriert sind. Mögliche Werte: 
++ `A` für die Nummerierung A, B, C, …
++ `a` für die Nummerierung a, b, c, …
++ `1` für die Nummerierung 1, 2, 3, …
+
+--- tbc ---
 
