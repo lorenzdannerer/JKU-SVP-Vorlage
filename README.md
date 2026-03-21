@@ -6,7 +6,7 @@ Diese ZIP kann dann in z.B. Overleaf importiert und benutzt werden.
 Die Ordner und Dateien namens "Protokoll+\<Nr\>" dürfen beliebig umbenannt werden, alle weiteren Dateien/Ordner sollten ihren orignalen Namen behalten.
 
 # Updates
-Die Vorlage wird laufend erweitert. Die Versionsnummer gibt dabei Auskunft über die Größe des Updates im sinne der geänderten Dateien.
+Die Vorlage wird laufend erweitert. Die Versionsnummer gibt dabei Auskunft über die Größe des Updates im Sinne der geänderten Dateien und Strukturen.
 + Ändert sich die vorderste Ziffer der Version, wird eine Neuistallation der gesamten Vorlage empfohlen, weil sich Dateistrukturen und Inhalte geändert haben.
 + Ändert sich die zweite Ziffer von links, genügt ein Update der `JKU_SVP.sty` und `Einstellungen.tex`.
 + Ändert sich nur die dritte Ziffer, genügt ein Update der `JKU_SVP.sty`.
