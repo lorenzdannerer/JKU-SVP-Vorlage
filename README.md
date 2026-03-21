@@ -1,5 +1,5 @@
 # Download
-Gehe zur [aktuellsten Version](/releases/latest) und lade unter "Assets" die .zip Datei herunter
+Gehe zur [aktuellsten Version](https://github.com/lorenzdannerer/JKU-SVP-Vorlage/releases/latest) und lade unter "Assets" die .zip Datei herunter
  
 Diese ZIP kann dann in z.B. Overleaf importiert und benutzt werden.
 
