@@ -1,5 +1,5 @@
 # Download
-Gehe zur [aktuellsten Version](https://github.com/lorenzdannerer/JKU-SVP-Vorlage/releases/latest) und lade unter "Assets" die .zip Datei herunter
+Gehe zur [aktuellsten Version](https://github.com/lorenzdannerer/JKU-SVP-Vorlage/releases/latest) und lade unter "Assets" die .zip Datei herunter.
  
 Diese ZIP kann dann in z.B. Overleaf importiert und benutzt werden.
 
@@ -29,7 +29,7 @@ Die Vorlage wird laufend erweitert. Die Versionsnummer gibt dabei Auskunft über
 
 `width` Gibt die Breite des Bildes an (Einheit dazuschreiben, z.b. `width=3cm`, `width=0.5\textwidth` [50% der Textbreite], ...) Standardmäßig auf `0.7\textwidth` gesetzt, muss also nicht jedes Mal angegeben werden.
 
-`<Dateiname>` gib den Dateinamen zu der Datei im Grafikordner an. Der Pfad muss standardmäßig nicht angegeben werden. Es werden diverse Bildformate sowie .pdf unterstützt.
+`<Dateiname>` gib den Dateinamen inkl. Endung zu der Datei im Grafikordner an. Der Pfad muss standardmäßig nicht angegeben werden. Es werden diverse Bildformate sowie .pdf unterstützt.
 
 ## Galerie
 Mit der Galerie lassen sich schnell Bilder nebenander einfügen. Dabei kann man zwischen einer gesamten Bildbeschriftung oder für jedes Bild eine seperate Beschriftung wählen. Zudem können die Bilder mit einer kleinen weißen Box in der oberen linken Ecke versehen werden, welche automatisch alphabetisch/numerisch durchzählt.
