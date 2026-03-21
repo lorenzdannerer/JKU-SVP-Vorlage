@@ -1,7 +1,7 @@
 # Download
 Das gesamte Verzeichnis lässt sich bei Code -> Download ZIP herunterladen und in z.B. Overleaf importieren.
 
-Die Ordner und Dateien namens "Protokoll+<Nr>" dürfen beliebig umbenannt werden, alle weiteren Dateien/Ordner sollten ihren orignalen Namen behalten.
+Die Ordner und Dateien namens "Protokoll+\<Nr\>" dürfen beliebig umbenannt werden, alle weiteren Dateien/Ordner sollten ihren orignalen Namen behalten.
 
 # Updates
 Die Vorlage wird laufend erweitert. Die Versionsnummer gibt dabei Auskunft über die Größe des Updates im sinne der geänderten Dateien.
