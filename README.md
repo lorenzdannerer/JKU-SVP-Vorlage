@@ -62,5 +62,9 @@ Andersrum macht es keinen Sinn, in der Galerie eine caption anzugeben, wenn jede
 + `a` für die Nummerierung a, b, c, …
 + `1` für die Nummerierung 1, 2, 3, …
 
+Es könne beliebig viele `\bild` Bilder hinzugefügt werden. Diese werden automatisch entsprechend den angegebenen Reihen ausgerichtet.
+
+`cols=1` führt dazu, dass alle Bilder ubtereinander ausgerichtet werden.
+
 --- tbc ---
 
