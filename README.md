@@ -5,9 +5,9 @@ Die Ordner und Dateien namens "Protokoll+\<Nr\>" dürfen beliebig umbenannt werd
 
 # Updates
 Die Vorlage wird laufend erweitert. Die Versionsnummer gibt dabei Auskunft über die Größe des Updates im sinne der geänderten Dateien.
-Ändert sich die vorderste Ziffer der Version, wird eine Neuistallation der gesamten Vorlage empfohlen, weil sich Dateistrukturen und Inhalte geändert haben.
-Ändert sich die zweite Ziffer von links, genügt ein Update der JKU_SVP.sty und Einstellungen.tex.
-Ändert sich nur die dritte Ziffer, genügt eine Update der JKU_SVP.sty.
++ Ändert sich die vorderste Ziffer der Version, wird eine Neuistallation der gesamten Vorlage empfohlen, weil sich Dateistrukturen und Inhalte geändert haben.
++ Ändert sich die zweite Ziffer von links, genügt ein Update der JKU_SVP.sty und Einstellungen.tex.
++ Ändert sich nur die dritte Ziffer, genügt eine Update der JKU_SVP.sty.
 
 # Funktionen
 ## Bilder einfügen
