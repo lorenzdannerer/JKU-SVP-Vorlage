@@ -14,7 +14,7 @@
 %                   \______/         \_/        |__/      
 %                                                               
 %               SCHULVERSUCHSPRAKTIKUM PHYSIK | LATEX VORLAGE
-%                      Version 1.0.0 Beta 21.03.2026)
+%                        Version 1.0.0 (14.04.2026)
 %
 % =========================================================================
 
@@ -292,7 +292,6 @@
     \bool_gset_true:N \g_svp_in_galerie_bool
     \int_gzero:N \g_svp_gal_count_int
     
-    % Festnageln! Keine figure-Umgebung mehr.
     \par\addvspace{\intextsep}\noindent
     \captionsetup{type=figure}
     \centering 
@@ -322,6 +321,7 @@
     
     \bool_if:NTF \g_svp_in_galerie_bool
       {
+
         % === INNERHALB DER GALERIE ===
         \int_gincr:N \g_svp_gal_count_int
         
@@ -335,8 +335,7 @@
         
         \int_compare:nNnF { \int_mod:nn { \g_svp_gal_count_int - 1 } { \g_svp_gal_cols_int } } = { 0 }
           { \hspace{1em} }
-        
-        % === DER FIX: Die richtige Umgebung wählen (subfigure vs minipage) ===
+
         \tl_if_empty:NTF \g_svp_gal_caption_tl
           { 
             \begin{minipage}[t]{ \dim_use:N \l_tmpa_dim } 
@@ -429,10 +428,10 @@
 
 % 1. Globaler Style für normale Abbildungen und Tabellen
 \captionsetup{
-    format = hang,           % Hängender Einzug (Text bricht sauber unter dem Text um, nicht unter "Abbildung 1:")
-    labelsep = colon,        % Trennzeichen zwischen Label und Text (colon = Doppelpunkt)
-    labelfont = {small},    % "Abbildung 1:" wird fett (bf) und serifenlos (sf)
-    textfont = {small},      % Der eigentliche Beschreibungstext wird etwas kleiner als der Fließtext
-    justification = justified, % Blocksatz für die Caption
+    format = hang,           % Hängender Einzug
+    labelsep = colon,        % Trennzeichen nach "Abbildung x"
+    labelfont = {small},
+    textfont = {small},
+    justification = justified,
     singlelinecheck = true   % Wenn die Caption nur 1 Zeile lang ist, wird sie automatisch zentriert
 }
