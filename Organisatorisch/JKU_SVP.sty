@@ -295,7 +295,7 @@
     % Festnageln! Keine figure-Umgebung mehr.
     \par\addvspace{\intextsep}\noindent
     \captionsetup{type=figure}
-    \centering % <--- DER FIX 1: Zentriert die gesamte Galerie inklusive Überläufen!
+    \centering 
   }
   {
     \par
@@ -311,10 +311,11 @@
 % --- 5. Der \bild Befehl ---
 \NewDocumentCommand { \bild } { O{} m }
   {
-    \unskip % <--- LÖSCHT versteckte Leerzeichen aus deinem Quellcode!
+    \mode_if_horizontal:T { \unskip }
+    
     \tl_clear:N \l_svp_bild_caption_tl
     \tl_clear:N \l_svp_bild_label_tl
-    \tl_clear:N \l_svp_bild_options_tl
+    \tl_clear:N \l_svp_bild_options_tl 
     \tl_set:Nn  \l_svp_bild_width_tl { 0.7\textwidth }
   
     \keys_set:nn { svp / bild } { #1 }
@@ -324,30 +325,41 @@
         % === INNERHALB DER GALERIE ===
         \int_gincr:N \g_svp_gal_count_int
         
-        % NEU: Vertikaler Zeilenumbruch VOR dem neuen Bild (außer beim allerersten)
         \int_compare:nNnT { \g_svp_gal_count_int } > { 1 }
           {
             \int_compare:nNnT { \int_mod:nn { \g_svp_gal_count_int - 1 } { \g_svp_gal_cols_int } } = { 0 }
-              { \par\vspace{1em} } % Start einer neuen Bildzeile
+              { \par\vspace{1em} } 
           }
         
         \dim_set:Nn \l_tmpa_dim { ( \linewidth - 1em * ( \g_svp_gal_cols_int - 1 ) ) / \g_svp_gal_cols_int - 0.5pt }
         
-        % Horizontaler Abstand (nicht beim ersten Bild einer neuen Zeile)
         \int_compare:nNnF { \int_mod:nn { \g_svp_gal_count_int - 1 } { \g_svp_gal_cols_int } } = { 0 }
           { \hspace{1em} }
         
-        \begin{minipage}[t]{ \dim_use:N \l_tmpa_dim }
+        % === DER FIX: Die richtige Umgebung wählen (subfigure vs minipage) ===
+        \tl_if_empty:NTF \g_svp_gal_caption_tl
+          { 
+            \begin{minipage}[t]{ \dim_use:N \l_tmpa_dim } 
+            \captionsetup{type=figure}
+          }
+          { 
+            \begin{subfigure}[c]{ \dim_use:N \l_tmpa_dim } 
+          }
+          
           \centering
           
           \tl_if_empty:NTF \l_svp_bild_options_tl
             { \hbox_set:Nn \l_svp_bild_box { \includegraphics[width=\linewidth]{#2} } }
-            { \hbox_set:Nn \l_svp_bild_box { \includegraphics[width=\linewidth, \l_svp_bild_options_tl]{#2} } }
+            { 
+              \hbox_set:Nn \l_svp_bild_box 
+                { 
+                  \use:x { \exp_not:N \includegraphics [ \l_svp_bild_options_tl , width=\linewidth ] { \exp_not:n { #2 } } } 
+                } 
+            }
             
           \leavevmode 
           \box_use:N \l_svp_bild_box 
           
-          % Autolabel-Overlay
           \str_case:Vn \g_svp_gal_autolabel_tl
             {
               { A } { \svp_insert_overlay:n { \int_to_Alph:n { \g_svp_gal_count_int } } }
@@ -355,36 +367,46 @@
               { 1 } { \svp_insert_overlay:n { \int_to_arabic:n { \g_svp_gal_count_int } } }
             }
           
-          % Beschriftungs-Logik
           \tl_if_empty:NF \l_svp_bild_caption_tl
             {
-              \tl_if_empty:NTF \g_svp_gal_caption_tl
-                { \captionof{figure}{\l_svp_bild_caption_tl} }
-                { \captionof{subfigure}{\l_svp_bild_caption_tl} }
+              \caption{\l_svp_bild_caption_tl} 
               \tl_if_empty:NF \l_svp_bild_label_tl { \label{\l_svp_bild_label_tl} }
             }
-        \end{minipage}
-        
-        % <--- ALTE UMBRUCH-LOGIK HIER GELÖSCHT! Nur noch Leerzeichen blockieren:
+            
+        % === ENDE DER UMGEBUNG ===
+        \tl_if_empty:NTF \g_svp_gal_caption_tl
+          { \end{minipage} }
+          { \end{subfigure} }
+          
         \ignorespaces
       }
       {
         % === EINZELBILD AUßERHALB DER GALERIE ===
         \par\addvspace{\intextsep}
         \begin{center}
+          \captionsetup{type=figure} 
+          
           \tl_if_empty:NTF \l_svp_bild_options_tl
             { \includegraphics[width=\l_svp_bild_width_tl]{#2} }
-            { \includegraphics[width=\l_svp_bild_width_tl, \l_svp_bild_options_tl]{#2} }
+            { 
+              \use:x 
+                { 
+                  \exp_not:N \includegraphics 
+                  [ \l_svp_bild_options_tl , width = \exp_not:V \l_svp_bild_width_tl ] 
+                  { \exp_not:n { #2 } } 
+                } 
+            }
             
           \tl_if_empty:NF \l_svp_bild_caption_tl
             {
-              \captionof{figure}{\l_svp_bild_caption_tl}
+              \caption{\l_svp_bild_caption_tl} 
               \tl_if_empty:NF \l_svp_bild_label_tl { \label{\l_svp_bild_label_tl} }
             }
         \end{center}
         \par\addvspace{\intextsep}
       }
   }
+
 
 % --- 6. Hilfsbefehl für das weiße Label-Kästchen ---
 \cs_new_protected:Nn \svp_insert_overlay:n
@@ -409,8 +431,8 @@
 \captionsetup{
     format = hang,           % Hängender Einzug (Text bricht sauber unter dem Text um, nicht unter "Abbildung 1:")
     labelsep = colon,        % Trennzeichen zwischen Label und Text (colon = Doppelpunkt)
-    labelfont = {footnotesize},    % "Abbildung 1:" wird fett (bf) und serifenlos (sf)
-    textfont = {footnotesize},      % Der eigentliche Beschreibungstext wird etwas kleiner als der Fließtext
+    labelfont = {small},    % "Abbildung 1:" wird fett (bf) und serifenlos (sf)
+    textfont = {small},      % Der eigentliche Beschreibungstext wird etwas kleiner als der Fließtext
     justification = justified, % Blocksatz für die Caption
     singlelinecheck = true   % Wenn die Caption nur 1 Zeile lang ist, wird sie automatisch zentriert
 }
