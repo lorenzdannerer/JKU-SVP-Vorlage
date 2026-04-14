@@ -32,6 +32,8 @@ Die Vorlage wird laufend erweitert. Die Versionsnummer gibt dabei Auskunft über
 
 `width` Gibt die Breite des Bildes an (Einheit dazuschreiben, z.b. `width=3cm`, `width=0.5\textwidth` [50% der Textbreite], ...) Standardmäßig auf `0.7\textwidth` gesetzt, muss also nicht jedes Mal angegeben werden.
 
+`options` hier lassen sich in geschwungenen Klammern die normalen `\includegraphics` Optionen einfügen. z.B. `options={angle=-90}` um das Bild um 90° zu drehen.
+
 `<Dateiname>` gib den Dateinamen inkl. Endung zu der Datei im Grafikordner an. Der Pfad muss standardmäßig nicht angegeben werden. Es werden diverse Bildformate sowie .pdf unterstützt.
 
 ## Galerie
