@@ -13,18 +13,42 @@
 %                  |  $$$$$$/       \  $/       | $$      
 %                   \______/         \_/        |__/      
 %                                                               
-%               SCHULVERSUCHSPRAKTIKUM PHYSIK | LATEX VORLAGEtest
+%               SCHULVERSUCHSPRAKTIKUM PHYSIK | LATEX VORLAGE
 %                        Version 1.0.0 (14.04.2026)
 %
 % =========================================================================
 
 
+
+% -------------------------------------------------------------------------
+% =========================================================================
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  PAKETE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% =========================================================================
+% -------------------------------------------------------------------------
+
+% --- Schrift ---
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[ngerman]{babel}
+\RequirePackage[onehalfspacing]{setspace}
+\RequirePackage{newtxtext, newtxmath}    % Times New Roman Klon
+
+% --- Layout & Design ---
+\RequirePackage{geometry}
 \RequirePackage{xcolor}
 \RequirePackage[most]{tcolorbox}
+\RequirePackage{scrlayer-scrpage}    % Kopf- und Fußzeile
 
+% --- Bilder ---
+\RequirePackage{graphicx}
+
+% --- Funktionen ---
+\RequirePackage{lastpage}
+\RequirePackage[autostyle=true]{csquotes}
+
+% --- Anderes ---
+\RequirePackage{subcaption}
+\RequirePackage{caption}
 
 % -------------------------------------------------------------------------
 % =========================================================================
@@ -33,7 +57,6 @@
 % -------------------------------------------------------------------------
 
 % --- SPRACHE, SCHRIFT & LAYOUT ---
-\RequirePackage{geometry}
 \geometry{
     a4paper, 
     left=2.5cm, 
@@ -42,12 +65,7 @@
     bottom=2.5cm, 
     headsep=0.5cm 
 }
-\RequirePackage{lastpage}
-\RequirePackage[onehalfspacing]{setspace}
 
-
-% Schriften (Times-Klon für wissenschaftlichen Look)
-\RequirePackage{newtxtext, newtxmath}
 
 % --- SCHALTER für serifen Überschrift ---
 \newif\ifSerifHeadings
@@ -68,13 +86,11 @@
 \KOMAoptions{parskip=half}
 
 % --- 2. BILDER & PFADE ---
-\RequirePackage{graphicx}
 \graphicspath{{Grafiken/}{../Organisatorisch/Grafiken/}}
 
 % ==========================================
 % 3. KOPFZEILEN & VARIABLEN
 % ==========================================
-\RequirePackage{scrlayer-scrpage}
 
 % Interne Speichervariablen anlegen
 \newcommand{\@praktikumstag}{}
@@ -216,7 +232,6 @@
 % ==========================================
 % LITERATUR & ZITIEREN (APA 7)
 % ==========================================
-\RequirePackage[autostyle=true]{csquotes} 
 
 \RequirePackage[
     backend=biber,      
@@ -237,11 +252,6 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%  SPEZIELLE BEFEHLE  %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % =========================================================================
 % -------------------------------------------------------------------------
-
-% --- BILDER & GALERIE (BETA) --- 
-\RequirePackage{graphicx}
-\RequirePackage{subcaption}
-\RequirePackage{caption}
 
 \ExplSyntaxOn
 
