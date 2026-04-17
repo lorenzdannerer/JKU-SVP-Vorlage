@@ -1,22 +1,19 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{JKU_SVP}[2025/04/17 Vorlage für JKU Schulversuchspraktikum]
+\ProvidesPackage{JKU_SVP}[2025/04/18 Vorlage für JKU Schulversuchspraktikum]
 
-% =====================================================
 %
-%
-%          /$$$$$$      /$$    /$$     /$$$$$$$ 
-%         /$$__  $$    | $$   | $$    | $$__  $$
-%        | $$  \__/    | $$   | $$    | $$  | $$
-%        |  $$$$$$     |  $$ / $$/    | $$$$$$$/
-%         \____  $$     \  $$ $$/     | $$____/ 
-%         /$$  \ $$      \  $$$/      | $$      
-%        |  $$$$$$/       \  $/       | $$      
-%         \______/         \_/        |__/      
+%            /$$$$$$      /$$    /$$     /$$$$$$$ 
+%           /$$__  $$    | $$   | $$    | $$__  $$
+%          | $$  \__/    | $$   | $$    | $$  | $$
+%          |  $$$$$$     |  $$ / $$/    | $$$$$$$/
+%           \____  $$     \  $$ $$/     | $$____/ 
+%           /$$  \ $$      \  $$$/      | $$      
+%          |  $$$$$$/       \  $/       | $$      
+%           \______/         \_/        |__/      
 %                                                               
-%     SCHULVERSUCHSPRAKTIKUM PHYSIK | LATEX VORLAGE
-%             Version 1.0.0 (17.04.2026)
+%       SCHULVERSUCHSPRAKTIKUM PHYSIK | LATEX VORLAGE
+%                Version 1.0.0 (18.04.2026)
 %
-% =====================================================
 
 
 
@@ -67,38 +64,22 @@
     headsep=0.5cm 
 }
 
-
-% --- SCHALTER für serifen Überschrift ---
-\newif\ifSerifHeadings
-\SerifHeadingsfalse
-
-\AtBeginDocument{%
-    \ifSerifHeadings
-        \setkomafont{disposition}{\color{SectionColor}\rmfamily\bfseries}
-    \fi
-}
-
-
-\addtokomafont{disposition}{\color{SectionColor}} % Farbe der Überschrift
-\addtokomafont{subsubsection}{\color{SubSubSectionColor}} % Farbe der Unterunterüberschrift
-\setkomafont{sectionentry}{\normalfont} % Inhaltsverzeichnis in der Schriftart des normalen Textes
-
 % --- ABSATZ-FORMATIERUNG ---
 \KOMAoptions{parskip=half}
+
 
 % --- 2. BILDER & PFADE ---
 \graphicspath{{Grafiken/}{../Organisatorisch/Grafiken/}}
 
-% ==========================================
-% 3. KOPFZEILEN & VARIABLEN
-% ==========================================
 
-% Interne Speichervariablen anlegen
+% --- 3. KOPFZEILE UND VARIABLEN ---
+
+% Interne Variablen anlegen
 \newcommand{\@praktikumstag}{}
 \newcommand{\@versuchstitel}{}
 \newcommand{\@versuchkurz}{}
 
-% Der Text-Abschneider
+% Der Text-Trenner (Trennt Kürzel von Bezeichnung)
 \ExplSyntaxOn
 \NewDocumentCommand{\SplitteTitel}{ m }
 {
@@ -110,7 +91,7 @@
 }
 \ExplSyntaxOff
 
-% User-Befehle 
+% User-Befehle
 \newcommand{\praktikumstag}[1]{\renewcommand{\@praktikumstag}{#1}}
 \newcommand{\versuchstitel}[1]{%
     \renewcommand{\@versuchstitel}{#1}% 
@@ -127,9 +108,7 @@
 \setkomafont{pageheadfoot}{\normalfont}
 
 
-% ==========================================
-% 4. DIE TITELSEITE
-% ==========================================
+% --- 4. TITELSEITE ---
 \newcommand{\maketitlepageSVP}{
     \begin{titlepage}
         \setlength{\parfillskip}{0pt plus 1fil}
@@ -137,8 +116,7 @@
         \singlespacing
 
         \vspace*{-1.5cm}
-        % OBERE LINIE
-        \textcolor{SectionColor}{\rule{\linewidth}{1pt}}\par
+        \textcolor{SectionColor}{\rule{\linewidth}{1pt}}\par    % obere Linie
         \vspace{0pt}
         
         {\usekomafont{disposition}\large \textcolor{SectionColor}{\textit{Protokoll zu}}} \par
@@ -149,7 +127,7 @@
             % Haupttitel
             {\usekomafont{disposition}\Huge \textcolor{SectionColor}{\@versuchstitel}} \par
             \vspace{-8pt}
-            \textcolor{SectionColor}{\rule{\linewidth}{1pt}}\par
+            \textcolor{SectionColor}{\rule{\linewidth}{1pt}}\par    % untere Linie
             \vspace{2ex}
             {\large \textit{Gruppe \GruppenNummer: \GruppenMitglieder} \par}
             
@@ -160,7 +138,7 @@
         
         \vspace{2cm}
         
-        % --- INHALTSVERZEICHNIS ---
+        % INHALTSVERZEICHNIS
         \setcounter{tocdepth}{1} 
         \deftocheading{toc}{} % Standard-Überschrift leeren
 
@@ -201,9 +179,24 @@
         \newpage
 }
 
-% ==========================================
-% 5. HAUPTKAPITEL (DESIGN)
-% ==========================================
+% --- 5. HAUPTKAPITEL (DESIGN) ---
+
+% Schalter für Serifenlose Überschriften
+\newif\ifSerifHeadings
+\SerifHeadingsfalse
+
+\AtBeginDocument{%
+    \ifSerifHeadings
+        \setkomafont{disposition}{\color{SectionColor}\rmfamily\bfseries}
+    \fi
+}
+
+
+\addtokomafont{disposition}{\color{SectionColor}}     % Farbe der Überschrift
+\addtokomafont{subsubsection}{\color{SubSubSectionColor}}    % Farbe der Unterunterüberschrift
+\setkomafont{sectionentry}{\normalfont}    % Inhaltsverzeichnis in der Schriftart des normalen Textes
+
+
 \makeatletter
 \renewcommand{\sectionlinesformat}[4]{%
     \Ifstr{#1}{section}{%
@@ -219,9 +212,7 @@
 \makeatother
 
 
-% ==========================================
-% 5. UNTERKAPITEL (ANPASSUNGEN)
-% ==========================================
+% --- 6. UNTERKAPITEL (ANPASSUNG) ---
 \RedeclareSectionCommands[
   runin = false,
   beforeskip = 12pt,
@@ -230,10 +221,7 @@
 
 
 
-% ==========================================
-% LITERATUR & ZITIEREN (APA 7)
-% ==========================================
-
+% --- 7. ZITATIONSSTIL ---
 \RequirePackage[
     backend=biber,      
     style=apa,          
@@ -245,15 +233,27 @@
 \setcounter{biburlucpenalty}{8000}
 
 
+% --- 8. BILDBESCHRIFTUNG STIL ---
+\captionsetup{
+    format = hang,           % Hängender Einzug
+    labelsep = colon,        % Trennzeichen nach "Abbildung x"
+    labelfont = {small},
+    textfont = {small},
+    justification = justified,
+    singlelinecheck = true   % Wenn die Caption nur 1 Zeile lang ist, wird sie automatisch zentriert
+}
 
 
 
-% -------------------------------------------------------------------------
-% =========================================================================
-% %%%%%%%%%%%%%%%%%%%%%%%%%  SPEZIELLE BEFEHLE  %%%%%%%%%%%%%%%%%%%%%%%%%%%
-% =========================================================================
-% -------------------------------------------------------------------------
 
+
+% -----------------------------------------------------
+% =====================================================
+% %%%%%%%%%%%%%%%%  SPEZIELLE BEFEHLE  %%%%%%%%%%%%%%%%
+% =====================================================
+% -----------------------------------------------------
+
+% %%%%%%%%%%%%%  BILD & GALERIE  %%%%%%%%%%%%%
 \ExplSyntaxOn
 
 % --- 1. Variablen anlegen ---
@@ -333,7 +333,7 @@
     \bool_if:NTF \g_svp_in_galerie_bool
       {
 
-        % === INNERHALB DER GALERIE ===
+        % INNERHALB DER GALERIE 
         \int_gincr:N \g_svp_gal_count_int
         
         \int_compare:nNnT { \g_svp_gal_count_int } > { 1 }
@@ -383,15 +383,18 @@
               \tl_if_empty:NF \l_svp_bild_label_tl { \label{\l_svp_bild_label_tl} }
             }
             
-        % === ENDE DER UMGEBUNG ===
         \tl_if_empty:NTF \g_svp_gal_caption_tl
           { \end{minipage} }
-          { \end{subfigure} }
-          
+          { \end{subfigure} }    % Ende der Umgebung
+
+
+
         \ignorespaces
       }
       {
-        % === EINZELBILD AUßERHALB DER GALERIE ===
+
+
+        % AUßERHALB DER GALERIE
         \par\addvspace{\intextsep}
         \begin{center}
           \captionsetup{type=figure} 
@@ -433,16 +436,5 @@
   }
 \ExplSyntaxOff
 
-% ==========================================
-% CAPTION STYLE (Bild- & Tabellenunterschriften)
-% ==========================================
 
-% 1. Globaler Style für normale Abbildungen und Tabellen
-\captionsetup{
-    format = hang,           % Hängender Einzug
-    labelsep = colon,        % Trennzeichen nach "Abbildung x"
-    labelfont = {small},
-    textfont = {small},
-    justification = justified,
-    singlelinecheck = true   % Wenn die Caption nur 1 Zeile lang ist, wird sie automatisch zentriert
-}
+
