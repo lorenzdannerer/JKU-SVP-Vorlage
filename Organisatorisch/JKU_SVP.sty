@@ -1,5 +1,9 @@
+\RequirePackage{silence}
+\WarningFilter{latex}{You have requested package `../Organisatorisch/JKU_SVP'} % deaktiviert Paket-Namen-Fehler
+
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{JKU_SVP}[2025/04/18 Vorlage für JKU Schulversuchspraktikum]
+
 
 %
 %            /$$$$$$      /$$    /$$     /$$$$$$$ 
@@ -24,11 +28,10 @@
 % -----------------------------------------------------
 
 % --- Schrift ---
-\RequirePackage[utf8]{inputenc}
+\ifdefined\UnicodeCharacterLetters \else \RequirePackage[T1]{fontenc} \fi
 \RequirePackage[T1]{fontenc}
 \RequirePackage[ngerman]{babel}
 \RequirePackage[onehalfspacing]{setspace}
-\RequirePackage{newtxtext, newtxmath}    % Times New Roman Klon
 
 % --- Layout & Design ---
 \RequirePackage{geometry}
@@ -38,11 +41,12 @@
 
 % --- Bilder ---
 \RequirePackage{graphicx}
+  \graphicspath{{Grafiken/}{../Organisatorisch/Grafiken/}}
 
 % --- Funktionen ---
 \RequirePackage[autostyle=true]{csquotes}
-\RequirePackage{subcaption}
 \RequirePackage{caption}
+\RequirePackage{subcaption}
 
 % --- Anderes ---
 \RequirePackage{lastpage}    % gibt die letzte Seite aus
@@ -54,7 +58,7 @@
 % =====================================================
 % -----------------------------------------------------
 
-% --- Seiternränder ---
+% --- 1. Seiternränder ---
 \geometry{
     a4paper, 
     left=2.5cm, 
@@ -64,51 +68,88 @@
     headsep=0.5cm 
 }
 
-% --- ABSATZ-FORMATIERUNG ---
+% --- 2. ABSATZ-FORMATIERUNG ---
 \KOMAoptions{parskip=half}
 
+% --- 3. SVP Setup (Protokollinfos) ---
 
-% --- 2. BILDER & PFADE ---
-\graphicspath{{Grafiken/}{../Organisatorisch/Grafiken/}}
-
-
-% --- 3. KOPFZEILE UND VARIABLEN ---
-
-% Interne Variablen anlegen
-\newcommand{\@praktikumstag}{}
-\newcommand{\@versuchstitel}{}
-\newcommand{\@versuchkurz}{}
-
-% Der Text-Trenner (Trennt Kürzel von Bezeichnung)
 \ExplSyntaxOn
-\NewDocumentCommand{\SplitteTitel}{ m }
-{
-    \seq_set_split:Nnn \l_tmpa_seq { - } { #1 }
-    \tl_set:Nx \l_tmpa_tl { \seq_item:Nn \l_tmpa_seq { 1 } }
-    \tl_trim_spaces:N \l_tmpa_tl
-    % Standard LaTeX \gdef verwenden, um Inkompatibilitäten zu vermeiden:
-    \exp_args:NNx \gdef \@versuchkurz { \l_tmpa_tl } 
-}
+
+% Variablen deklarieren
+\tl_new:N \g_svp_tag_tl
+\tl_new:N \g_svp_titel_tl
+\tl_new:N \g_svp_kurztitel_tl
+\tl_new:N \g_svp_gruppe_tl
+\tl_new:N \g_svp_mitglieder_tl
+\tl_new:N \g_svp_semester_tl
+
+% Logik zur Titel Aufspaltung
+\cs_new_protected:Nn \_svp_split_titel:n
+  {
+    % Enthält der Titel einen Bindestrich?
+    \tl_if_in:nnTF { #1 } { - }
+      { 
+        % JA
+        \seq_set_split:Nnn \l_tmpa_seq { - } { #1 }
+        \tl_gset:Nx \g_svp_kurztitel_tl { \seq_item:Nn \l_tmpa_seq { 1 } }
+      }
+      { 
+        % NEIN
+        \tl_gset:Nn \g_svp_kurztitel_tl { \color{red} ?? } 
+      }
+
+    \tl_trim_spaces:N \g_svp_kurztitel_tl
+  }
+
+% Variablen & Keys definieren
+\keys_define:nn { jku / svp }
+  {
+    tag         .tl_set:N  = \g_svp_tag_tl,
+    tag         .initial:n = { <kein Datum angegeben> },
+    
+    titel       .code:n = { 
+                    \tl_gset:Nn \g_svp_titel_tl { #1 }    % Speichert den ganzen Titel
+                    \_svp_split_titel:n { #1 }            % Führt die Aufspaltung aus
+                  },
+    
+    gruppe      .tl_set:N  = \g_svp_gruppe_tl,
+    gruppe      .initial:n = { <keine Gruppe angegeben> },
+    
+    mitglieder  .tl_set:N  = \g_svp_mitglieder_tl,
+    mitglieder  .initial:n = { <kein Name angegeben> },
+    
+    semester    .tl_set:N  = \g_svp_semester_tl,
+    semester    .initial:n = { <kein Semester angegeben> },
+  }
+
+
+
+% User-Interface Befehl
+\NewDocumentCommand{\svpSetup}{m}
+  { \keys_set:nn { jku / svp } { #1 } }
+
+% Getter-Befehle
+\NewDocumentCommand{\getSvpTag}        { } { \tl_use:N \g_svp_tag_tl }
+\NewDocumentCommand{\getSvpTitel}      { } { \tl_use:N \g_svp_titel_tl }
+\NewDocumentCommand{\getSvpKurztitel}  { } { \tl_use:N \g_svp_kurztitel_tl }
+\NewDocumentCommand{\getSvpGruppe}     { } { \tl_use:N \g_svp_gruppe_tl }
+\NewDocumentCommand{\getSvpMitglieder} { } { \tl_use:N \g_svp_mitglieder_tl }
+\NewDocumentCommand{\getSvpSemester}   { } { \tl_use:N \g_svp_semester_tl }
+
 \ExplSyntaxOff
 
-% User-Befehle
-\newcommand{\praktikumstag}[1]{\renewcommand{\@praktikumstag}{#1}}
-\newcommand{\versuchstitel}[1]{%
-    \renewcommand{\@versuchstitel}{#1}% 
-    \SplitteTitel{#1}% 
-}
 
-% Kopfzeile
+% --- 4. Kopfzeile ---
 \pagestyle{scrheadings}
 \clearpairofpagestyles
-\ihead{\@praktikumstag}
-\chead{Versuch zu \@versuchkurz}
-\ohead{Gruppe \GruppenNummer}
+\ihead{\getSvpTag}
+\chead{Versuch zu \getSvpKurztitel}
+\ohead{Gruppe \getSvpGruppe}
 \cfoot{Seite \thepage\ von \pageref{LastPage}}
 \setkomafont{pageheadfoot}{\normalfont}
 
 
-% --- 4. TITELSEITE ---
+% --- 5. TITELSEITE ---
 \newcommand{\maketitlepageSVP}{
     \begin{titlepage}
         \setlength{\parfillskip}{0pt plus 1fil}
@@ -125,15 +166,15 @@
         \begin{center}
         
             % Haupttitel
-            {\usekomafont{disposition}\Huge \textcolor{SectionColor}{\@versuchstitel}} \par
+            {\usekomafont{disposition}\Huge \textcolor{SectionColor}{\getSvpTitel}} \par
             \vspace{-8pt}
             \textcolor{SectionColor}{\rule{\linewidth}{1pt}}\par    % untere Linie
             \vspace{2ex}
-            {\large \textit{Gruppe \GruppenNummer: \GruppenMitglieder} \par}
+            {\large \textit{Gruppe \getSvpGruppe: \getSvpMitglieder} \par}
             
             \vspace{8pt}
             
-            am \@praktikumstag
+            am \getSvpTag
         \end{center}
         
         \vspace{2cm}
@@ -172,14 +213,14 @@
         \vfill
         \textbf{Schulversuchspraktikum Physik} \\
          Teil II \\[8pt]
-        \Semester
+        \getSvpSemester
                 
         \end{titlepage}
          
         \newpage
 }
 
-% --- 5. HAUPTKAPITEL (DESIGN) ---
+% --- 6. HAUPTKAPITEL (DESIGN) ---
 
 % Schalter für Serifenlose Überschriften
 \newif\ifSerifHeadings
@@ -212,7 +253,7 @@
 \makeatother
 
 
-% --- 6. UNTERKAPITEL (ANPASSUNG) ---
+% --- 7. UNTERKAPITEL (ANPASSUNG) ---
 \RedeclareSectionCommands[
   runin = false,
   beforeskip = 12pt,
@@ -221,19 +262,25 @@
 
 
 
-% --- 7. ZITATIONSSTIL ---
+% --- 8. ZITATIONSSTIL ---
 \RequirePackage[
     backend=biber,      
     style=apa,          
     sortcites=true,
+    citecounter=true,
 ]{biblatex}
 
 % Zeilenumbrüche in URLs im Literaturverzeichnis erlauben (verhindert overfull hboxes)
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
 
+% Leeres Literaturverzeichnis erlauben (kein Fehler wenn nichts zitiert)
+\AtEndOfPackage{%
+    \WarningFilter*{latex}{Empty bibliography}%
+}
 
-% --- 8. BILDBESCHRIFTUNG STIL ---
+
+% --- 9. BILDBESCHRIFTUNG STIL ---
 \captionsetup{
     format = hang,           % Hängender Einzug
     labelsep = colon,        % Trennzeichen nach "Abbildung x"
@@ -255,186 +302,192 @@
 
 % %%%%%%%%%%%%%  BILD & GALERIE  %%%%%%%%%%%%%
 \ExplSyntaxOn
-
-% --- 1. Variablen anlegen ---
+ 
+% --- Variablen deklarieren ---
 \bool_new:N \g_svp_in_galerie_bool
 \int_new:N  \g_svp_gal_cols_int
 \int_new:N  \g_svp_gal_count_int
-\tl_new:N   \g_svp_gal_autolabel_tl
 \tl_new:N   \g_svp_gal_caption_tl
 \tl_new:N   \g_svp_gal_label_tl
-\tl_new:N   \l_svp_bild_caption_tl
-\tl_new:N   \l_svp_bild_label_tl
-\tl_new:N   \l_svp_bild_options_tl
-\tl_new:N   \l_svp_bild_width_tl
-\box_new:N  \l_svp_bild_box 
-
-% --- 2. Keys für die Galerie ---
+\tl_new:N   \g_svp_gal_autolabel_tl
+ 
+\tl_new:N \l_svp_bild_caption_tl
+\tl_new:N \l_svp_bild_label_tl
+\tl_new:N \l_svp_bild_options_tl
+\tl_new:N \l_svp_bild_width_tl
+\box_new:N \l_svp_bild_box
+ 
+% --- Variablen definieren ---
 \keys_define:nn { svp / galerie }
   {
-    cols      .int_set:N  = \g_svp_gal_cols_int,
-    cols      .initial:n  = 2,            
-    caption   .tl_set:N   = \g_svp_gal_caption_tl,
-    label     .tl_set:N   = \g_svp_gal_label_tl,
-    autolabel .tl_set:N   = \g_svp_gal_autolabel_tl,
-    autolabel .initial:n  = none,         
+    cols      .int_set:N = \g_svp_gal_cols_int,
+    cols      .initial:n = 2,
+    caption   .tl_set:N  = \g_svp_gal_caption_tl,
+    label     .tl_set:N  = \g_svp_gal_label_tl,
+    autolabel .tl_set:N  = \g_svp_gal_autolabel_tl,
+    autolabel .initial:n = none,
   }
-
-% --- 3. Keys für das Einzelbild ---
+ 
 \keys_define:nn { svp / bild }
   {
-    width     .tl_set:N   = \l_svp_bild_width_tl,
-    width     .initial:n  = 0.7\textwidth,
-    caption   .tl_set:N   = \l_svp_bild_caption_tl,
-    label     .tl_set:N   = \l_svp_bild_label_tl,
-    options   .tl_set:N   = \l_svp_bild_options_tl, 
+    width   .tl_set:N = \l_svp_bild_width_tl,
+    caption .tl_set:N = \l_svp_bild_caption_tl,
+    label   .tl_set:N = \l_svp_bild_label_tl,
+    options .tl_set:N = \l_svp_bild_options_tl,
   }
+ 
+% --- Hilfsbefehle ---
+ 
+% Weißes Label-Kästchen ("A", "a" oder "1") oben links über dem Bild
+\cs_new_protected:Nn \svp_insert_overlay:n
+  {
+    \llap
+      {
+        \makebox [ \box_wd:N \l_svp_bild_box ] [ l ]
+          {
+            \hspace{0.3em}
+            \raisebox { \dim_eval:n { \box_ht:N \l_svp_bild_box - 1.2em } } [0pt][0pt]
+              { \fcolorbox{black}{white}{ \sffamily\bfseries\small #1 } }
+          }
+      }
+  }
+ 
+% Bild einbinden – mit oder ohne zusätzliche includegraphics-Optionen
+% #1 = width-Ausdruck, #2 = Dateiname
+\cs_new_protected:Nn \svp_includegraphics:nn
+  {
+    \tl_if_empty:NTF \l_svp_bild_options_tl
+      { 
+        % Fall 1: Keine Extra-Optionen
+        \includegraphics [ width = #1 ] { #2 } 
+      }
+      { 
+        % Fall 2: Mit Optionen
+        \use:x 
+          { 
+            \exp_not:N \includegraphics [ 
+              \exp_not:V \l_svp_bild_options_tl , 
+              width = #1 
+            ] { #2 } 
+          } 
+      }
+  }
+ 
 
-% --- 4. Die Galerie-Umgebung  ---
+% --- GALERIE Umgebung ---
+
 \NewDocumentEnvironment { galerie } { O{} }
   {
-  \unskip
-    \tl_gclear:N \g_svp_gal_caption_tl
-    \tl_gclear:N \g_svp_gal_label_tl
-    \tl_gset:Nn  \g_svp_gal_autolabel_tl { none }
-    \int_gset:Nn \g_svp_gal_cols_int { 2 }
-    
-    \keys_set:nn { svp / galerie } { #1 }
+    % Globale Galerievariablen zurücksetzen
+    \tl_gclear:N  \g_svp_gal_caption_tl
+    \tl_gclear:N  \g_svp_gal_label_tl
+    \tl_gset:Nn   \g_svp_gal_autolabel_tl { none }
+    \int_gset:Nn  \g_svp_gal_cols_int { 2 }
+    \int_gzero:N  \g_svp_gal_count_int
     \bool_gset_true:N \g_svp_in_galerie_bool
-    \int_gzero:N \g_svp_gal_count_int
-    
-    \par\addvspace{\intextsep}\noindent
+ 
+    \keys_set:nn { svp / galerie } { #1 }
+ 
+    \par\addvspace{\intextsep}
     \captionsetup{type=figure}
-    \centering 
+    \centering
   }
   {
     \par
     \tl_if_empty:NF \g_svp_gal_caption_tl
       {
-        \captionof{figure}{\g_svp_gal_caption_tl}
-        \tl_if_empty:NF \g_svp_gal_label_tl { \label{\g_svp_gal_label_tl} }
+        \captionof{figure}{ \g_svp_gal_caption_tl }
+        \tl_if_empty:NF \g_svp_gal_label_tl { \label{ \g_svp_gal_label_tl } }
       }
     \par\addvspace{\intextsep}
     \bool_gset_false:N \g_svp_in_galerie_bool
   }
-
-% --- 5. Der \bild Befehl ---
+ 
+% --- \bild-BEFEHL ---
+ 
 \NewDocumentCommand { \bild } { O{} m }
   {
     \mode_if_horizontal:T { \unskip }
-    
+    \group_begin:
+ 
+    % Lokale Bildvariablen zurücksetzen und Keys laden
     \tl_clear:N \l_svp_bild_caption_tl
     \tl_clear:N \l_svp_bild_label_tl
-    \tl_clear:N \l_svp_bild_options_tl 
+    \tl_clear:N \l_svp_bild_options_tl
     \tl_set:Nn  \l_svp_bild_width_tl { 0.7\textwidth }
-  
     \keys_set:nn { svp / bild } { #1 }
-    
+ 
     \bool_if:NTF \g_svp_in_galerie_bool
       {
-
-        % INNERHALB DER GALERIE 
+        % Innerhalb der Galerie
         \int_gincr:N \g_svp_gal_count_int
-        
+ 
+        % Zeilenumbruch nach jeder vollen Spaltenreihe
         \int_compare:nNnT { \g_svp_gal_count_int } > { 1 }
           {
-            \int_compare:nNnT { \int_mod:nn { \g_svp_gal_count_int - 1 } { \g_svp_gal_cols_int } } = { 0 }
-              { \par\vspace{1em} } 
+            \int_compare:nNnT
+              { \int_mod:nn { \g_svp_gal_count_int - 1 } { \g_svp_gal_cols_int } } = { 0 }
+              { \par\vspace{1em} }
           }
-        
-        \dim_set:Nn \l_tmpa_dim { ( \linewidth - 1em * ( \g_svp_gal_cols_int - 1 ) ) / \g_svp_gal_cols_int - 0.5pt }
-        
-        \int_compare:nNnF { \int_mod:nn { \g_svp_gal_count_int - 1 } { \g_svp_gal_cols_int } } = { 0 }
+ 
+        % Horizontalen Abstand vor jedem Bild (außer dem ersten in der Reihe)
+        \int_compare:nNnF
+          { \int_mod:nn { \g_svp_gal_count_int - 1 } { \g_svp_gal_cols_int } } = { 0 }
           { \hspace{1em} }
-
+ 
+        % Breite: gleichmäßige Aufteilung mit 1em Abstand zwischen Spalten
+        \dim_set:Nn \l_tmpa_dim
+          { ( \linewidth - 1em * ( \g_svp_gal_cols_int - 1 ) ) / \g_svp_gal_cols_int - 0.5pt }
+ 
+        % Subfigure oder Minipage (je nachdem, ob die Galerie eine Gesamtcaption hat)
         \tl_if_empty:NTF \g_svp_gal_caption_tl
-          { 
-            \begin{minipage}[t]{ \dim_use:N \l_tmpa_dim } 
-            \captionsetup{type=figure}
-          }
-          { 
-            \begin{subfigure}[c]{ \dim_use:N \l_tmpa_dim } 
-          }
-          
+          { \begin{minipage}[t]{ \l_tmpa_dim } \captionsetup{type=figure} }
+          { \begin{subfigure}[c]{ \l_tmpa_dim } }
+ 
           \centering
-          
-          \tl_if_empty:NTF \l_svp_bild_options_tl
-            { \hbox_set:Nn \l_svp_bild_box { \includegraphics[width=\linewidth]{#2} } }
-            { 
-              \hbox_set:Nn \l_svp_bild_box 
-                { 
-                  \use:x { \exp_not:N \includegraphics [ \l_svp_bild_options_tl , width=\linewidth ] { \exp_not:n { #2 } } } 
-                } 
-            }
-            
-          \leavevmode 
-          \box_use:N \l_svp_bild_box 
-          
+ 
+          % Bild in Box speichern (für Overlay-Berechnung)
+          \hbox_set:Nn \l_svp_bild_box { \svp_includegraphics:nn { \linewidth } {#2} }
+          \leavevmode
+          \box_use:N \l_svp_bild_box
+ 
+          % Autolabel-Overlay (A/a/1)
           \str_case:Vn \g_svp_gal_autolabel_tl
             {
               { A } { \svp_insert_overlay:n { \int_to_Alph:n { \g_svp_gal_count_int } } }
               { a } { \svp_insert_overlay:n { \int_to_alph:n { \g_svp_gal_count_int } } }
               { 1 } { \svp_insert_overlay:n { \int_to_arabic:n { \g_svp_gal_count_int } } }
             }
-          
+ 
+          % Einzelbild-Caption
           \tl_if_empty:NF \l_svp_bild_caption_tl
             {
-              \caption{\l_svp_bild_caption_tl} 
-              \tl_if_empty:NF \l_svp_bild_label_tl { \label{\l_svp_bild_label_tl} }
+              \caption{ \l_svp_bild_caption_tl }
+              \tl_if_empty:NF \l_svp_bild_label_tl { \label{ \l_svp_bild_label_tl } }
             }
-            
+ 
         \tl_if_empty:NTF \g_svp_gal_caption_tl
           { \end{minipage} }
-          { \end{subfigure} }    % Ende der Umgebung
-
-
-
+          { \end{subfigure} }
+ 
         \ignorespaces
       }
       {
-
-
-        % AUßERHALB DER GALERIE
+        % -- Einzelbild außerhalb der Galerie --
         \par\addvspace{\intextsep}
         \begin{center}
-          \captionsetup{type=figure} 
-          
-          \tl_if_empty:NTF \l_svp_bild_options_tl
-            { \includegraphics[width=\l_svp_bild_width_tl]{#2} }
-            { 
-              \use:x 
-                { 
-                  \exp_not:N \includegraphics 
-                  [ \l_svp_bild_options_tl , width = \exp_not:V \l_svp_bild_width_tl ] 
-                  { \exp_not:n { #2 } } 
-                } 
-            }
-            
+          \captionsetup{type=figure}
+          \svp_includegraphics:nn { \l_svp_bild_width_tl } {#2}
           \tl_if_empty:NF \l_svp_bild_caption_tl
             {
-              \caption{\l_svp_bild_caption_tl} 
-              \tl_if_empty:NF \l_svp_bild_label_tl { \label{\l_svp_bild_label_tl} }
+              \caption{ \l_svp_bild_caption_tl }
+              \tl_if_empty:NF \l_svp_bild_label_tl { \label{ \l_svp_bild_label_tl } }
             }
         \end{center}
         \par\addvspace{\intextsep}
       }
+ 
+    \group_end:
   }
 
-
-% --- 6. Hilfsbefehl für das weiße Label-Kästchen ---
-\cs_new_protected:Nn \svp_insert_overlay:n
-  {
-    \llap {
-      \makebox [ \box_wd:N \l_svp_bild_box ] [ l ] {
-        \hspace{0.3em} % Abstand vom linken Rand
-        \raisebox { \dim_eval:n { \box_ht:N \l_svp_bild_box - 1.2em } } [0pt] [0pt]
-          {
-            \fcolorbox{black}{white}{\sffamily\bfseries\small #1}
-          }
-      }
-    }
-  }
 \ExplSyntaxOff
-
-
-
