@@ -51,7 +51,6 @@
 % --- Anderes ---
 \RequirePackage{lastpage}    % gibt die letzte Seite aus
 
-
 % -----------------------------------------------------
 % =====================================================
 % %%%%%%%%%%%%%%%%%%%%  LAYOUT  %%%%%%%%%%%%%%%%%%%%%%%
@@ -280,6 +279,9 @@
 }
 
 
+\PassOptionsToPackage{noabbrev}{cleveref}
+
+
 % --- 9. BILDBESCHRIFTUNG STIL ---
 \captionsetup{
     format = hang,           % Hängender Einzug
@@ -414,7 +416,11 @@
     \tl_clear:N \l_svp_bild_caption_tl
     \tl_clear:N \l_svp_bild_label_tl
     \tl_clear:N \l_svp_bild_options_tl
-    \tl_set:Nn  \l_svp_bild_width_tl { 0.7\textwidth }
+
+    \bool_if:NTF \g_svp_in_galerie_bool
+      { \tl_set:Nn \l_svp_bild_width_tl { \linewidth } }
+      { \tl_set:Nn \l_svp_bild_width_tl { 0.7\textwidth } }
+    
     \keys_set:nn { svp / bild } { #1 }
  
     \bool_if:NTF \g_svp_in_galerie_bool
@@ -447,7 +453,7 @@
           \centering
  
           % Bild in Box speichern (für Overlay-Berechnung)
-          \hbox_set:Nn \l_svp_bild_box { \svp_includegraphics:nn { \linewidth } {#2} }
+          \hbox_set:Nn \l_svp_bild_box { \svp_includegraphics:nn { \l_svp_bild_width_tl } {#2} }
           \leavevmode
           \box_use:N \l_svp_bild_box
  
