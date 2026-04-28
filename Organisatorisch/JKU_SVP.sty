@@ -2,7 +2,7 @@
 \WarningFilter{latex}{You have requested package `../Organisatorisch/JKU_SVP'} % deaktiviert Paket-Namen-Fehler
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{JKU_SVP}[2025/04/18 Vorlage für JKU Schulversuchspraktikum]
+\ProvidesPackage{JKU_SVP}[2025/04/28 Vorlage für JKU Schulversuchspraktikum]
 
 
 %
@@ -16,7 +16,7 @@
 %           \______/         \_/        |__/      
 %                                                               
 %       SCHULVERSUCHSPRAKTIKUM PHYSIK | LATEX VORLAGE
-%                Version 1.0.0 (18.04.2026)
+%                Version 1.0.2 (28.04.2026)
 %
 
 
@@ -417,9 +417,14 @@
     \tl_clear:N \l_svp_bild_label_tl
     \tl_clear:N \l_svp_bild_options_tl
 
-    \bool_if:NTF \g_svp_in_galerie_bool
-      { \tl_set:Nn \l_svp_bild_width_tl { \linewidth } }
-      { \tl_set:Nn \l_svp_bild_width_tl { 0.7\textwidth } }
+    \bool_lazy_and:nnTF
+      { \g_svp_in_galerie_bool }
+      { \int_compare_p:n { \g_svp_gal_cols_int > 1 } }
+      {
+        \tl_set:Nn \l_svp_bild_width_tl { \linewidth }}
+      {
+        \tl_set:Nn \l_svp_bild_width_tl { 0.8\textwidth }
+      }
     
     \keys_set:nn { svp / bild } { #1 }
  
