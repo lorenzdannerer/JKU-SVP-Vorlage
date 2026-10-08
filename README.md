@@ -10,6 +10,7 @@ Die Vorlage wird laufend erweitert. Die Versionsnummer gibt dabei Auskunft über
 + 1.1.**1** | Ändert sich nur die dritte Ziffer, genügt ein Update der `JKU_SVP.sty`.
 
 # Allgemeine Hinweise
++ Die Vorgaben für die Inhalte des Protokolls sind aus dem Word-Dokument (hochgeladen auf Moodle) zu entnehmen!
 + Die Ordner und Dateien namens "Protokoll+\<Nr\>" dürfen beliebig umbenannt werden, alle weiteren Dateien/Ordner sollten ihren orignalen Namen behalten.
 + Das gesamte Protokoll kann auch direkt im Hauptdokument geschrieben werden. Dann wird der Ordner "Kapitel" nicht benötigt und kann gelöscht werden.
 
